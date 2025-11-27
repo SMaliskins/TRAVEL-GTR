@@ -1,0 +1,34 @@
+[
+    {
+        "id": 1,
+        "label_en": "Home",
+        "label_lv": "Sākums",
+        "label_ru": "Главная",
+        "url": "#home",
+        "order": 1
+    },
+    {
+        "id": 2,
+        "label_en": "Services",
+        "label_lv": "Pakalpojumi",
+        "label_ru": "Услуги",
+        "url": "#services",
+        "order": 2
+    },
+    {
+        "id": 3,
+        "label_en": "About",
+        "label_lv": "Par mums",
+        "label_ru": "О нас",
+        "url": "#about",
+        "order": 3
+    },
+    {
+        "id": 4,
+        "label_en": "Contact",
+        "label_lv": "Kontakti",
+        "label_ru": "Контакты",
+        "url": "#contact",
+        "order": 4
+    }
+]

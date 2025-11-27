@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="lv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gulliver Travel</title>
+    <!-- Preconnect to external domains for faster loading -->
+    <link rel="preconnect" href="https://travel.gtr.lv">
+    <link rel="preconnect" href="https://www.waavo.com">
+    <link rel="preconnect" href="https://gtrlv.waavo.com">
+    <link rel="dns-prefetch" href="https://travel.gtr.lv">
+    <link rel="dns-prefetch" href="https://www.waavo.com">
+    <link rel="dns-prefetch" href="https://gtrlv.waavo.com">
+    <!-- Preload critical images -->
+    <link rel="preload" href="https://travel.gtr.lv/img/gtr_logo.png" as="image">
+    <link rel="preload" href="https://travel.gtr.lv/img/whatsapp_icon.png" as="image">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 25px 40px;
+            background-color: white;
+            position: relative;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 1000;
+        }
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 5px;
+            gap: 5px;
+        }
+        .menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background-color: #333;
+            transition: all 0.3s ease;
+        }
+        .menu-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        .menu-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+        .menu-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(7px, -7px);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #333;
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            height: 60px;
+            width: auto;
+            transition: transform 0.3s ease;
+        }
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+        .menu {
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 35px;
+            margin: 0;
+            padding: 0;
+        }
+        .menu li {
+            margin: 0;
+            position: relative;
+        }
+        .menu li a {
+            text-decoration: none;
+            color: #333;
+            font-size: 16px;
+            font-weight: 500;
+            background-color: white;
+            padding: 8px 0;
+            position: relative;
+            transition: color 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .menu li a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: #007BFF;
+            transition: width 0.3s ease;
+        }
+        .menu li a:hover {
+            color: #007BFF;
+        }
+        .menu li a:hover::after {
+            width: 100%;
+        }
+        .whatsapp-link {
+            display: flex;
+            align-items: center;
+        }
+        .whatsapp-link a {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+        }
+        .whatsapp-link a img {
+            width: 45px;
+            height: 45px;
+            display: block;
+            background-color: white;
+            transition: transform 0.3s ease;
+        }
+        .whatsapp-link a:hover img {
+            transform: scale(1.1);
+        }
+        .footer {
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 40px 20px;
+            margin-top: 40px;
+        }
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        .footer-section h3 {
+            margin-bottom: 15px;
+            color: #333;
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .footer-section p, .footer-section a {
+            color: #666;
+            text-decoration: none;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+        .footer-section a:hover {
+            color: #007BFF;
+        }
+        .social-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #ddd;
+            color: #666;
+            text-decoration: none;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .social-links a:hover {
+            background-color: #007BFF;
+            transform: translateY(-2px);
+            color: white;
+        }
+        .social-links a svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        .footer-operators {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            text-align: center;
+        }
+        .footer-operators h4 {
+            color: #333;
+            font-size: 14px;
+            margin-bottom: 15px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .operators-logos {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 25px;
+        }
+        .operator-logo {
+            height: 40px;
+            width: auto;
+            filter: grayscale(100%);
+            opacity: 0.6;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .operator-logo:hover {
+            filter: grayscale(0%);
+            opacity: 1;
+            transform: scale(1.05);
+        }
+        .footer-certifications {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+        }
+        .iata-logo {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        .iata-logo img {
+            height: 50px;
+            width: auto;
+            flex-shrink: 0;
+        }
+        .iata-logo span {
+            color: #666;
+            font-size: 14px;
+            white-space: nowrap;
+        }
+        .license-info {
+            color: #666;
+            font-size: 14px;
+        }
+        .license-info a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        .license-info a:hover {
+            text-decoration: underline;
+        }
+        .footer-bottom {
+            text-align: center;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            color: #999;
+            font-size: 12px;
+        }
+        /* Floating WhatsApp Button */
+        .floating-whatsapp {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            width: 60px;
+            height: 60px;
+            background-color: #25D366;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 12px rgba(37, 211, 102, 0.4);
+            z-index: 1000;
+            transition: transform 0.3s ease, box-shadow 0.3s ease, width 0.3s ease;
+            cursor: pointer;
+            text-decoration: none;
+            animation: fadeInUp 0.5s ease-out;
+            will-change: transform, opacity;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .floating-whatsapp::before {
+            content: attr(data-whatsapp-text);
+            position: absolute;
+            right: 70px;
+            background-color: #25D366;
+            color: white;
+            padding: 8px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateX(10px);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        .floating-whatsapp::after {
+            content: '';
+            position: absolute;
+            right: 60px;
+            width: 0;
+            height: 0;
+            border-top: 8px solid transparent;
+            border-bottom: 8px solid transparent;
+            border-left: 8px solid #25D366;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: translateX(10px);
+        }
+        .floating-whatsapp:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(37, 211, 102, 0.6);
+        }
+        .floating-whatsapp:hover::before,
+        .floating-whatsapp:hover::after {
+            opacity: 1;
+            transform: translateX(0);
+        }
+        .floating-whatsapp img {
+            width: 35px;
+            height: 35px;
+            filter: brightness(0) invert(1);
+        }
+        @media (max-width: 768px) {
+            .floating-whatsapp {
+                width: 55px;
+                height: 55px;
+                bottom: 15px;
+                right: 15px;
+            }
+            .floating-whatsapp img {
+                width: 30px;
+                height: 30px;
+            }
+            .floating-whatsapp::before {
+                font-size: 12px;
+                padding: 6px 10px;
+                right: 65px;
+            }
+        }
+        .language-switcher {
+            display: inline-block;
+        }
+        .language-switcher select {
+            padding: 8px 12px;
+            font-size: 14px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            color: #333;
+            cursor: pointer;
+            outline: none;
+        }
+        .language-switcher select:hover {
+            border-color: #007BFF;
+        }
+        .language-switcher select:focus {
+            border-color: #007BFF;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        /* Footer language switcher */
+        .footer .language-switcher {
+            margin-top: 15px;
+        }
+        .footer .language-switcher select {
+            background-color: #fff;
+            color: #333;
+            border-color: #ddd;
+        }
+        .footer .language-switcher select:hover {
+            border-color: #007BFF;
+            background-color: #fff;
+        }
+        .footer .language-switcher select:focus {
+            border-color: #007BFF;
+            background-color: #fff;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        .footer .language-switcher select option {
+            background-color: #fff;
+            color: #333;
+        }
+        
+        /* Newsletter Form */
+        .footer-newsletter {
+            max-width: 300px;
+        }
+        .newsletter-form {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        .newsletter-form input[type="email"] {
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .newsletter-form input[type="email"]:focus {
+            outline: none;
+            border-color: #007BFF;
+            box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+        }
+        .newsletter-consent {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+        .newsletter-consent input[type="checkbox"] {
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+        .newsletter-form button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        .newsletter-form button:hover {
+            background-color: #0056b3;
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            .header {
+                padding: 20px 25px;
+            }
+            .logo img {
+                height: 50px;
+                width: auto;
+            }
+            .menu-toggle {
+                display: flex;
+            }
+            .menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background-color: white;
+                flex-direction: column;
+                padding: 20px;
+                box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+                display: none;
+                gap: 0;
+                width: 100%;
+                z-index: 1000;
+            }
+            .menu.active {
+                display: flex;
+            }
+            .menu li {
+                margin: 0;
+                width: 100%;
+                border-bottom: 1px solid #eee;
+            }
+            .menu li:last-child {
+                border-bottom: none;
+            }
+            .menu li a {
+                display: block;
+                padding: 12px 0;
+                font-size: 16px;
+            }
+            .header-right {
+                gap: 10px;
+            }
+            .whatsapp-link a img {
+                width: 32px;
+                height: 32px;
+            }
+            .language-switcher select {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .operators-logos {
+                gap: 15px;
+            }
+            .operator-logo {
+                height: 35px;
+            }
+            .footer-operators h4 {
+                font-size: 12px;
+            }
+            .footer-newsletter {
+                max-width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .header {
+                padding: 15px 20px;
+            }
+            .logo img {
+                height: 45px;
+                width: auto;
+            }
+            .header-right {
+                gap: 10px;
+            }
+            .whatsapp-link a img {
+                width: 35px;
+                height: 35px;
+            }
+            .language-switcher select {
+                padding: 6px 10px;
+                font-size: 12px;
+            }
+            .operators-logos {
+                gap: 10px;
+            }
+            .operator-logo {
+                height: 30px;
+            }
+            .footer-operators h4 {
+                font-size: 11px;
+                margin-bottom: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="logo">
+            <a href="https://travel.gtr.lv">
+                <img src="https://travel.gtr.lv/img/gtr_logo.png" width="140" alt="Gulliver Travel">
+            </a>
+        </div>
+        <button class="menu-toggle" aria-label="Toggle menu" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        <ul class="menu" id="mainMenu">
+            <li><a href="#home" onclick="closeMenu()">Home</a></li>
+            <li><a href="#services" onclick="closeMenu()">Services</a></li>
+            <li><a href="#about" onclick="closeMenu()">About</a></li>
+            <li><a href="#contact" onclick="closeMenu()">Contact</a></li>
+        </ul>
+        <div class="header-right">
+            <div class="whatsapp-link">
+                <a href="https://wa.me/37122306472"><img src="https://travel.gtr.lv/img/whatsapp_icon.png" alt="WhatsApp"></a>
+            </div>
+            <div class="language-switcher">
+                <select id="languageSelect" onchange="changeLanguage(this.value)">
+                    <option value="lv" selected>LV</option>
+                    <option value="en">EN</option>
+                    <option value="ru">RU</option>
+                </select>
+            </div>
+        </div>
+    </header>
+   <div id="waavo-insert-iframe" class="waavo-iframes" data-cookie-agreement="1"
+        data-https="true" data-host="gtrlv.waavo.com" data-language="lav" data-url="/travels_search"></div>
+    <script type="text/javascript" src="https://www.waavo.com/js/waavo_loader.min.js" defer></script>
+    <script src="load-admin-data.php"></script>
+    <script>
+        // Mobile menu toggle functions
+        function toggleMenu() {
+            const menu = document.getElementById('mainMenu');
+            const toggle = document.querySelector('.menu-toggle');
+            menu.classList.toggle('active');
+            toggle.classList.toggle('active');
+        }
+        
+        function closeMenu() {
+            const menu = document.getElementById('mainMenu');
+            const toggle = document.querySelector('.menu-toggle');
+            menu.classList.remove('active');
+            toggle.classList.remove('active');
+        }
+        
+        // Load menu from admin panel
+        function loadMenuFromAdmin() {
+            if (typeof window.AdminData !== 'undefined' && window.AdminData.menu && window.AdminData.menu.length > 0) {
+                const menu = document.getElementById('mainMenu');
+                const currentLang = document.documentElement.lang || 'lv';
+                const langKey = currentLang === 'en' ? 'label_en' : (currentLang === 'ru' ? 'label_ru' : 'label_lv');
+                
+                menu.innerHTML = window.AdminData.menu
+                    .sort((a, b) => (a.order || 0) - (b.order || 0))
+                    .map(item => {
+                        const label = item[langKey] || item.label_en || item.label_lv || item.label_ru;
+                        return `<li><a href="${item.url || '#'}" onclick="closeMenu()">${label}</a></li>`;
+                    }).join('');
+            }
+        }
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', function(event) {
+            const menu = document.getElementById('mainMenu');
+            const toggle = document.querySelector('.menu-toggle');
+            const header = document.querySelector('.header');
+            
+            if (menu && toggle && header) {
+                if (!header.contains(event.target) && menu.classList.contains('active')) {
+                    closeMenu();
+                }
+            }
+        });
+        
+        // Convert language code to Waavo format
+        function getWaavoLanguageCode(lang) {
+            const langMap = {
+                'en': 'eng',
+                'lv': 'lav',
+                'ru': 'rus'
+            };
+            return langMap[lang] || 'eng';
+        }
+        
+        // Translations for footer and other text
+        const translations = {
+            en: {
+                contact: 'Contact Information',
+                phone: 'Phone/WhatsApp:',
+                email: 'Email:',
+                address: 'Address:',
+                'quick-links': 'Quick Links',
+                home: 'Home',
+                services: 'Services',
+                about: 'About Us',
+                'contact-link': 'Contact',
+                'follow-us': 'Follow Us',
+                addressText: '16/18 Blaumana street, Riga, LV-1011',
+                'iata-member': 'IATA Member',
+                license: 'License:',
+                'whatsapp-tooltip': 'Contact us on WhatsApp',
+                'tagline': 'Your trusted travel partner for unforgettable journeys and experiences.',
+                'registration-nr': 'Registration Nr:',
+                'registration-date': 'Registration Date:',
+                'working-hours': 'Working Hours',
+                'working-hours-text': 'Mon-Fri: 09:00 - 18:00',
+                'support-24-7': '24/7 Support',
+                'support-24-7-text': 'whatsapp/phone',
+                'terms-conditions': 'Terms and Conditions',
+                'privacy-policy': 'Privacy Policy',
+                'usage-terms': 'Terms of Use',
+                'useful-info': 'Useful Information',
+                'documents': 'Documents',
+                'visa-travel-docs': 'Visa and Travel Documents',
+                'buj': 'BUJ',
+                'how-to-book': 'How to Book Online',
+                'career': 'Career',
+                'newsletter-title': 'Subscribe to Special Offers!',
+                'newsletter-text': 'Be the first to know about the latest offers and discounts!',
+                'newsletter-email': 'Email address',
+                'newsletter-subscribe': 'Subscribe',
+                'newsletter-consent': 'I agree to the processing of my personal data by SIA Gulliver Travel for direct marketing purposes (sending newsletters, advertising and other information) and confirm that I have read the Privacy Policy.'
+            },
+            lv: {
+                contact: 'Kontaktinformācija',
+                phone: 'Tālrunis/WhatsApp:',
+                email: 'E-pasts:',
+                address: 'Adrese:',
+                'quick-links': 'Ātras saites',
+                home: 'Sākums',
+                services: 'Pakalpojumi',
+                about: 'Par mums',
+                'contact-link': 'Kontakti',
+                'follow-us': 'Sekojiet mums',
+                addressText: 'Blaumaņa 16/18, Rīga, LV-1011',
+                'iata-member': 'IATA biedrs',
+                license: 'Licence:',
+                'whatsapp-tooltip': 'Sazinieties ar mums WhatsApp',
+                'tagline': 'Jūsu uzticamais ceļojumu partneris neaizmirstamiem piedzīvojumiem un pieredzēm.',
+                'registration-nr': 'Reģistrācijas Nr:',
+                'registration-date': 'Reģistrācijas datums:',
+                'working-hours': 'Darba laiks',
+                'working-hours-text': 'Pr-Pk: 09:00 - 18:00',
+                'support-24-7': '24/7 Atbalsts',
+                'support-24-7-text': 'whatsapp/tālrunis',
+                'terms-conditions': 'Noteikumi un nosacījumi',
+                'privacy-policy': 'Privātuma politika',
+                'usage-terms': 'Lietošanas noteikumi',
+                'useful-info': 'Noderīga informācija',
+                'documents': 'Dokumenti',
+                'visa-travel-docs': 'Vīzas un ceļošanas dokumenti',
+                'buj': 'BUJ',
+                'how-to-book': 'Kā rezervēt ceļojumu tiešsaistē',
+                'career': 'Karjera',
+                'newsletter-title': 'Piesakies īpašajiem piedāvājumiem!',
+                'newsletter-text': 'Esi pirmais, kas uzzina par jaunākajiem piedāvājumiem un atlaidēm!',
+                'newsletter-email': 'E-pasta adrese',
+                'newsletter-subscribe': 'Piesakieties',
+                'newsletter-consent': 'Es piekrītu manu personīgo datu apstrādei, ko SIA Gulliver Travel izmantos tiešā mārketinga nolūkos (jaunumu sūtīšanai, reklāmai un citiem informācijas paziņojumiem) un ar šo apstiprinu, ka esmu izlasījis Privātuma politika.'
+            },
+            ru: {
+                contact: 'Контактная информация',
+                phone: 'Телефон/WhatsApp:',
+                email: 'Email:',
+                address: 'Адрес:',
+                'quick-links': 'Быстрые ссылки',
+                home: 'Главная',
+                services: 'Услуги',
+                about: 'О нас',
+                'contact-link': 'Контакты',
+                'follow-us': 'Следите за нами',
+                addressText: 'Блауманя 16/18, Рига, ЛВ-1011',
+                'iata-member': 'Член IATA',
+                license: 'Лицензия:',
+                'whatsapp-tooltip': 'Написать в WhatsApp',
+                'tagline': 'Ваш надежный партнер в путешествиях для незабываемых поездок и впечатлений.',
+                'registration-nr': 'Регистрационный номер:',
+                'registration-date': 'Дата регистрации:',
+                'working-hours': 'Рабочее время',
+                'working-hours-text': 'Пн-Пт: 09:00 - 18:00',
+                'support-24-7': 'Поддержка 24/7',
+                'support-24-7-text': 'whatsapp/телефон',
+                'terms-conditions': 'Правила и условия',
+                'privacy-policy': 'Политика конфиденциальности',
+                'usage-terms': 'Условия использования',
+                'useful-info': 'Полезная информация',
+                'documents': 'Документы',
+                'visa-travel-docs': 'Виза и документы для путешествий',
+                'buj': 'BUJ',
+                'how-to-book': 'Как забронировать путешествие онлайн',
+                'career': 'Карьера',
+                'newsletter-title': 'Подпишитесь на специальные предложения!',
+                'newsletter-text': 'Будьте первыми, кто узнает о последних предложениях и скидках!',
+                'newsletter-email': 'Адрес электронной почты',
+                'newsletter-subscribe': 'Подписаться',
+                'newsletter-consent': 'Я согласен на обработку моих персональных данных SIA Gulliver Travel в целях прямого маркетинга (отправка новостей, рекламы и других информационных сообщений) и подтверждаю, что прочитал Политику конфиденциальности.'
+            }
+        };
+        
+        // Update footer text based on language
+        function updateFooterText(lang) {
+            const langData = translations[lang] || translations.en;
+            
+            // Update elements with data-i18n attribute
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.getAttribute('data-i18n');
+                if (langData[key]) {
+                    el.textContent = langData[key];
+                }
+            });
+            
+            // Update elements with data-i18n-placeholder attribute
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-i18n-placeholder');
+                if (langData[key]) {
+                    el.setAttribute('placeholder', langData[key]);
+                }
+            });
+            
+            // Update address text
+            const addressEl = document.getElementById('address-text');
+            if (addressEl && langData.addressText) {
+                addressEl.textContent = langData.addressText;
+            }
+            
+            // Update WhatsApp button tooltip
+            const whatsappBtn = document.querySelector('.floating-whatsapp');
+            if (whatsappBtn && langData['whatsapp-tooltip']) {
+                whatsappBtn.setAttribute('title', langData['whatsapp-tooltip']);
+                whatsappBtn.setAttribute('data-whatsapp-text', langData['whatsapp-tooltip']);
+            }
+        }
+        
+        // Handle newsletter form submission
+        function handleNewsletterSubmit(event) {
+            event.preventDefault();
+            const emailInput = document.getElementById('newsletterEmail');
+            const email = emailInput.value.trim();
+            const form = event.target;
+            const submitButton = form.querySelector('button[type="submit"]');
+            const currentLang = document.documentElement.lang || 'lv';
+            
+            // Disable button during submission
+            submitButton.disabled = true;
+            submitButton.textContent = 'Subscribing...';
+            
+            // Get consent checkbox
+            const consentCheckbox = form.querySelector('input[type="checkbox"]');
+            if (!consentCheckbox.checked) {
+                alert('Please agree to the privacy policy');
+                submitButton.disabled = false;
+                submitButton.textContent = translations[currentLang]['newsletter-subscribe'] || 'Subscribe';
+                return false;
+            }
+            
+            // Send to server
+            const newsletterUrl = './newsletter.php';
+            console.log('Sending newsletter subscription to:', newsletterUrl, {email: email, language: currentLang});
+            
+            fetch(newsletterUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    email: email,
+                    language: currentLang,
+                    consent: true
+                })
+            })
+            .then(function(response) {
+                console.log('Newsletter response status:', response.status);
+                if (!response.ok) {
+                    throw new Error('HTTP error! status: ' + response.status);
+                }
+                return response.text().then(function(text) {
+                    try {
+                        return JSON.parse(text);
+                    } catch(e) {
+                        console.error('Failed to parse JSON:', text);
+                        throw new Error('Invalid JSON response: ' + text.substring(0, 100));
+                    }
+                });
+            })
+            .then(function(data) {
+                console.log('Newsletter response data:', data);
+                if (data && data.success) {
+                    if (data.duplicate) {
+                        alert('This email is already subscribed to our newsletter.');
+                    } else {
+                        alert('Thank you for subscribing! We will send you special offers soon.');
+                    }
+                    form.reset();
+                } else {
+                    const errorMsg = data && data.message ? data.message : 'Failed to subscribe. Please try again.';
+                    alert('Error: ' + errorMsg);
+                    console.error('Newsletter subscription failed:', data);
+                }
+            })
+            .catch(function(error) {
+                console.error('Newsletter subscription error:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    stack: error.stack,
+                    url: newsletterUrl
+                });
+                alert('Error subscribing. Please check console for details or try again later.');
+            })
+            .finally(function() {
+                submitButton.disabled = false;
+                const langData = translations[currentLang] || translations.en;
+                submitButton.textContent = langData['newsletter-subscribe'] || 'Subscribe';
+            });
+            
+            return false;
+        }
+        
+        // Prevent multiple simultaneous language changes
+        let isChangingLanguage = false;
+        let iframeUpdateTimeout = null;
+        let isInitialLoad = true;
+        
+        function changeLanguage(lang) {
+            // Prevent multiple simultaneous calls
+            if (isChangingLanguage) {
+                return;
+            }
+            
+            // Save language preference for all pages
+            localStorage.setItem('preferredLanguage', lang);
+            
+            // Get Waavo language code
+            const waavoLang = getWaavoLanguageCode(lang);
+            
+            // Update URL - update wurl parameter if it exists, and add/update lang parameter
+            const url = new URL(window.location);
+            const wurl = url.searchParams.get('wurl');
+            if (wurl) {
+                // Update language: parameter inside wurl
+                const updatedWurl = wurl.replace(/language:[^\/]+/, 'language:' + waavoLang);
+                url.searchParams.set('wurl', updatedWurl);
+            }
+            url.searchParams.set('lang', lang);
+            window.history.replaceState({}, '', url);
+            
+            // Update the HTML lang attribute
+            document.documentElement.lang = lang;
+            
+            // Sync language selectors (header and footer)
+            syncLanguageSelectors(lang);
+            
+            // Update footer text immediately
+            updateFooterText(lang);
+            
+            // Update menu from admin panel
+            if (typeof loadMenuFromAdmin === 'function') {
+                loadMenuFromAdmin();
+            }
+            
+            // Skip iframe update during initial page load to prevent Firefox hangs
+            if (isInitialLoad) {
+                // Just update data-language, Waavo will use it when creating iframe
+                const waavoContainer = document.getElementById('waavo-insert-iframe');
+                if (waavoContainer) {
+                    waavoContainer.setAttribute('data-language', waavoLang);
+                }
+                isChangingLanguage = false;
+                return;
+            }
+            
+            // Only update iframe if it's already loaded and ready (user manually changed language)
+            const waavoContainer = document.getElementById('waavo-insert-iframe');
+            const iframe = waavoContainer?.querySelector('iframe');
+            
+            // Only update iframe if it exists and has src (is loaded)
+            if (iframe && iframe.src && iframe.src.length > 0) {
+                // Debounce iframe update to prevent Firefox hangs
+                clearTimeout(iframeUpdateTimeout);
+                isChangingLanguage = true;
+                
+                iframeUpdateTimeout = setTimeout(function() {
+                    updateWaavoIframe(waavoLang);
+                    isChangingLanguage = false;
+                    console.log('Language changed to:', lang);
+                }, 500);
+            } else {
+                // Iframe not ready yet, just update data-language for when it loads
+                if (waavoContainer) {
+                    waavoContainer.setAttribute('data-language', waavoLang);
+                }
+                isChangingLanguage = false;
+                console.log('Language changed to:', lang, '(iframe not ready, will use data-language)');
+            }
+        }
+        
+        // Separate function for iframe updates to prevent blocking
+        function updateWaavoIframe(waavoLang) {
+            const waavoContainer = document.getElementById('waavo-insert-iframe');
+            if (!waavoContainer) {
+                return;
+            }
+            
+            // Check if language actually needs to be updated
+            const currentLang = waavoContainer.getAttribute('data-language');
+            if (currentLang === waavoLang) {
+                // Language already set, skip update
+                return;
+            }
+            
+            // Update data-language attribute
+            waavoContainer.setAttribute('data-language', waavoLang);
+            
+            // Update data-url if it contains language: parameter
+            const dataUrl = waavoContainer.getAttribute('data-url');
+            if (dataUrl && dataUrl.includes('language:')) {
+                const updatedDataUrl = dataUrl.replace(/language:[^\/]+/, 'language:' + waavoLang);
+                waavoContainer.setAttribute('data-url', updatedDataUrl);
+            }
+            
+            // Try to update iframe URL with safety checks
+            const iframe = waavoContainer.querySelector('iframe');
+            if (iframe && iframe.src) {
+                try {
+                    let currentSrc = iframe.src;
+                    if (!currentSrc) {
+                        return; // Iframe not loaded yet
+                    }
+                    
+                    // Check if language is already correct in URL
+                    const langMatch = currentSrc.match(/language:([^\/&?]+)/i);
+                    if (langMatch && langMatch[1].toLowerCase() === waavoLang.toLowerCase()) {
+                        return; // Language already correct, skip update
+                    }
+                    
+                    // Update language: parameter inside the path
+                    currentSrc = currentSrc.replace(/language:[^\/&?]+/gi, 'language:' + waavoLang);
+                    // Also update URL parameters if they exist
+                    currentSrc = currentSrc.replace(/[?&]lang=[^&]*/i, '').replace(/[?&]language=[^&]*/i, '');
+                    const separator = currentSrc.includes('?') ? '&' : '?';
+                    const newSrc = currentSrc + separator + 'language=' + waavoLang;
+                    
+                    // Only update if URL actually changed
+                    if (newSrc !== currentSrc) {
+                        iframe.src = newSrc;
+                    }
+                } catch(e) {
+                    console.warn('Error updating iframe:', e);
+                }
+            } else {
+                // Iframe not created yet - skip observer on initial load to prevent Firefox hangs
+                // The iframe will be created by Waavo loader with correct language from data-language attribute
+                // Only update if user manually changes language
+                return;
+            }
+        }
+        
+        // Get initial language from URL, localStorage, or default
+        function getInitialLanguage() {
+            // Check URL parameter first
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlLang = urlParams.get('lang');
+            if (urlLang && ['en', 'lv', 'ru'].includes(urlLang)) {
+                return urlLang;
+            }
+            
+            // Check wurl parameter for language: value
+            const wurl = urlParams.get('wurl');
+            if (wurl) {
+                const langMatch = wurl.match(/language:([^\/]+)/);
+                if (langMatch) {
+                    const waavoLang = langMatch[1].toLowerCase();
+                    // Convert Waavo language code back to our format
+                    const langMap = {
+                        'eng': 'en',
+                        'lav': 'lv',
+                        'rus': 'ru'
+                    };
+                    const lang = langMap[waavoLang];
+                    if (lang) {
+                        return lang;
+                    }
+                }
+            }
+            
+            // Then check localStorage
+            const savedLang = localStorage.getItem('preferredLanguage');
+            if (savedLang && ['en', 'lv', 'ru'].includes(savedLang)) {
+                return savedLang;
+            }
+            
+            // Default to Latvian for travel.gtr.lv and gtr.lv domains
+            const hostname = window.location.hostname.toLowerCase();
+            if (hostname === 'travel.gtr.lv' || hostname === 'gtr.lv' || hostname === 'www.travel.gtr.lv' || hostname === 'www.gtr.lv') {
+                return 'lv';
+            }
+            
+            // Default to English for other domains
+            return 'en';
+        }
+        
+        // Set initial language as early as possible, before Waavo loads
+        (function() {
+            const initialLang = getInitialLanguage();
+            const waavoLang = getWaavoLanguageCode(initialLang);
+            
+            // Update wurl in URL if it exists and contains language:
+            const url = new URL(window.location);
+            const wurl = url.searchParams.get('wurl');
+            if (wurl && wurl.includes('language:')) {
+                const updatedWurl = wurl.replace(/language:[^\/]+/, 'language:' + waavoLang);
+                url.searchParams.set('wurl', updatedWurl);
+                window.history.replaceState({}, '', url);
+            }
+            
+            const waavoContainer = document.getElementById('waavo-insert-iframe');
+            if (waavoContainer) {
+                waavoContainer.setAttribute('data-language', waavoLang);
+                
+                // Update data-url if it contains language: parameter
+                const dataUrl = waavoContainer.getAttribute('data-url');
+                if (dataUrl && dataUrl.includes('language:')) {
+                    const updatedDataUrl = dataUrl.replace(/language:[^\/]+/, 'language:' + waavoLang);
+                    waavoContainer.setAttribute('data-url', updatedDataUrl);
+                }
+            }
+            document.documentElement.lang = initialLang;
+            // Save to localStorage if not already set
+            if (!localStorage.getItem('preferredLanguage')) {
+                localStorage.setItem('preferredLanguage', initialLang);
+            }
+            // Update footer text on initial load
+            updateFooterText(initialLang);
+        })();
+        
+        // Sync language selectors (header and footer)
+        function syncLanguageSelectors(lang) {
+            const headerSelect = document.getElementById('languageSelect');
+            const footerSelect = document.getElementById('languageSelectFooter');
+            if (headerSelect) {
+                headerSelect.value = lang;
+            }
+            if (footerSelect) {
+                footerSelect.value = lang;
+            }
+        }
+        
+        // Set initial language in select and ensure it's applied
+        window.addEventListener('DOMContentLoaded', function() {
+            const initialLang = getInitialLanguage();
+            syncLanguageSelectors(initialLang);
+            
+            // Only update UI elements, NOT iframe (iframe will be created by Waavo with correct language from data-language)
+            // This prevents Firefox hangs during page load
+            updateFooterText(initialLang);
+            document.documentElement.lang = initialLang;
+            
+            // Load menu from admin panel
+            setTimeout(function() {
+                loadMenuFromAdmin();
+            }, 100);
+            
+            // Mark initial load as complete after a delay to allow Waavo to initialize
+            setTimeout(function() {
+                isInitialLoad = false;
+            }, 2000);
+        });
+        
+        // Close mobile menu when window is resized to desktop size (with debounce for performance)
+        let resizeTimeout;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimeout);
+            resizeTimeout = setTimeout(function() {
+                if (window.innerWidth > 768) {
+                    closeMenu();
+                }
+            }, 150);
+        });
+        
+        // Page load logging
+        (function() {
+            // Function to calculate load time
+            function getLoadTime() {
+                if (performance.timing && performance.timing.loadEventEnd && performance.timing.navigationStart) {
+                    return Math.round(performance.timing.loadEventEnd - performance.timing.navigationStart);
+                } else if (performance.timeOrigin) {
+                    return Math.round(performance.now());
+                }
+                return 'N/A';
+            }
+            
+            // Function to get detailed performance metrics
+            function getPerformanceMetrics() {
+                const metrics = {
+                    loadTime: getLoadTime(),
+                    domContentLoaded: 'N/A',
+                    firstPaint: 'N/A',
+                    firstContentfulPaint: 'N/A'
+                };
+                
+                if (performance.timing) {
+                    if (performance.timing.domContentLoadedEventEnd && performance.timing.navigationStart) {
+                        metrics.domContentLoaded = Math.round(performance.timing.domContentLoadedEventEnd - performance.timing.navigationStart);
+                    }
+                }
+                
+                // Get paint metrics if available
+                if (performance.getEntriesByType) {
+                    const paintEntries = performance.getEntriesByType('paint');
+                    paintEntries.forEach(function(entry) {
+                        if (entry.name === 'first-paint') {
+                            metrics.firstPaint = Math.round(entry.startTime);
+                        } else if (entry.name === 'first-contentful-paint') {
+                            metrics.firstContentfulPaint = Math.round(entry.startTime);
+                        }
+                    });
+                }
+                
+                return metrics;
+            }
+            
+            // Function to send log data
+            function sendLogData() {
+                // Get performance metrics
+                const perfMetrics = getPerformanceMetrics();
+                
+                // Get connection type if available
+                let connectionType = 'N/A';
+                let connectionSpeed = 'N/A';
+                if (navigator.connection) {
+                    connectionType = navigator.connection.effectiveType || 'N/A';
+                    connectionSpeed = navigator.connection.downlink ? navigator.connection.downlink + ' Mbps' : 'N/A';
+                } else if (navigator.mozConnection) {
+                    connectionType = navigator.mozConnection.effectiveType || 'N/A';
+                    connectionSpeed = navigator.mozConnection.bandwidth ? (navigator.mozConnection.bandwidth / 1000) + ' Mbps' : 'N/A';
+                } else if (navigator.webkitConnection) {
+                    connectionType = navigator.webkitConnection.effectiveType || 'N/A';
+                }
+                
+                // Prepare log data
+                const logData = {
+                    loadTime: perfMetrics.loadTime,
+                    domContentLoaded: perfMetrics.domContentLoaded,
+                    firstPaint: perfMetrics.firstPaint,
+                    firstContentfulPaint: perfMetrics.firstContentfulPaint,
+                    url: window.location.href,
+                    screenSize: window.innerWidth + 'x' + window.innerHeight,
+                    language: document.documentElement.lang || navigator.language || 'N/A',
+                    connectionType: connectionType,
+                    connectionSpeed: connectionSpeed
+                };
+                
+                // Send to server (use fetch with error handling)
+                // Use same directory as current page
+                const logUrl = './log.php';
+                
+                // Debug: log that we're trying to send
+                console.log('Sending log data to:', logUrl, logData);
+                
+                fetch(logUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(logData)
+                })
+                .then(function(response) {
+                    if (!response.ok) {
+                        console.warn('Logging response not OK:', response.status);
+                    }
+                    return response.json();
+                })
+                .then(function(data) {
+                    if (data && data.success) {
+                        console.log('Logging successful:', data.message);
+                    } else if (data && !data.success) {
+                        console.warn('Logging failed:', data.message);
+                        if (data.logFile) {
+                            console.warn('Log file path:', data.logFile);
+                            console.warn('Directory writable:', data.writable);
+                        }
+                    }
+                })
+                .catch(function(error) {
+                    // Log error for debugging
+                    console.warn('Logging failed with fetch:', error);
+                    // Try alternative method with XMLHttpRequest
+                    try {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open('POST', logUrl, true);
+                        xhr.setRequestHeader('Content-Type', 'application/json');
+                        xhr.onload = function() {
+                            if (xhr.status === 200) {
+                                try {
+                                    const response = JSON.parse(xhr.responseText);
+                                    if (response.success) {
+                                        console.log('Logging successful (XHR):', response.message);
+                                    } else {
+                                        console.warn('Logging failed (XHR):', response.message);
+                                    }
+                                } catch(e) {
+                                    console.warn('Failed to parse XHR response:', e);
+                                }
+                            } else {
+                                console.warn('XHR logging failed with status:', xhr.status);
+                            }
+                        };
+                        xhr.onerror = function() {
+                            console.warn('XHR logging network error');
+                        };
+                        xhr.send(JSON.stringify(logData));
+                    } catch(e) {
+                        console.warn('Alternative logging method also failed:', e);
+                    }
+                });
+            }
+            
+            // Send log when page is fully loaded
+            if (document.readyState === 'complete') {
+                // Page already loaded
+                setTimeout(sendLogData, 1000);
+            } else {
+                // Wait for page load
+                window.addEventListener('load', function() {
+                    setTimeout(sendLogData, 1000);
+                });
+            }
+        })();
+    </script>
+    
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Gulliver Travel</h3>
+                <p data-i18n="tagline">Your trusted travel partner for unforgettable journeys and experiences.</p>
+                <p><span data-i18n="registration-nr">Registration Nr:</span> LV40003935619</p>
+                <p><span data-i18n="registration-date">Registration Date:</span> 02.07.2007</p>
+                <p><a href="#career" data-i18n="career">Career</a></p>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n="contact">Contact Information</h3>
+                <p><span data-i18n="working-hours">Working Hours</span><br>
+                <span data-i18n="working-hours-text">Mon-Fri: 09:00 - 18:00</span></p>
+                <p><span data-i18n="support-24-7">24/7 Support</span><br>
+                <span data-i18n="support-24-7-text">whatsapp/phone</span><br>
+                <a href="https://wa.me/37122306472">+371 22306472</a></p>
+                <p><span data-i18n="email">Email:</span> <a href="mailto:info@gtr.lv">info@gtr.lv</a></p>
+                <p><span data-i18n="address">Address:</span> <span id="address-text" data-i18n-address="lv">Blaumaņa 16/18, Rīga, LV-1011</span></p>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n="terms-conditions">Terms and Conditions</h3>
+                <p><a href="#terms" data-i18n="terms-conditions">Terms and Conditions</a></p>
+                <p><a href="#privacy" data-i18n="privacy-policy">Privacy Policy</a></p>
+                <p><a href="#usage" data-i18n="usage-terms">Terms of Use</a></p>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n="useful-info">Useful Information</h3>
+                <p><a href="#documents" data-i18n="documents">Documents</a></p>
+                <p><a href="#visa" data-i18n="visa-travel-docs">Visa and Travel Documents</a></p>
+                <p><a href="#buj" data-i18n="buj">BUJ</a></p>
+                <p><a href="#how-to-book" data-i18n="how-to-book">How to Book Online</a></p>
+            </div>
+            <div class="footer-section">
+                <h3 data-i18n="follow-us">Follow Us</h3>
+                <div class="social-links">
+                    <a href="https://www.instagram.com/travel.gtr.lv/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162 0 3.403 2.759 6.162 6.162 6.162 3.403 0 6.162-2.759 6.162-6.162 0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4 2.209 0 4 1.791 4 4 0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44 0 .795.645 1.44 1.441 1.44.795 0 1.44-.645 1.44-1.44 0-.795-.645-1.44-1.44-1.44z"/>
+                        </svg>
+                    </a>
+                    <a href="https://www.facebook.com/GulliverTravel.lv" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+                        </svg>
+                    </a>
+                    <a href="https://wa.me/37122306472" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+                        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+                        </svg>
+                    </a>
+                </div>
+                <div class="language-switcher" style="margin-top: 20px;">
+                    <select id="languageSelectFooter" onchange="changeLanguage(this.value)">
+                        <option value="lv" selected>LV</option>
+                        <option value="en">EN</option>
+                        <option value="ru">RU</option>
+                    </select>
+                </div>
+            </div>
+            <div class="footer-section footer-newsletter">
+                <h3 data-i18n="newsletter-title">Subscribe to Special Offers!</h3>
+                <p data-i18n="newsletter-text">Be the first to know about the latest offers and discounts!</p>
+                <form id="newsletterForm" class="newsletter-form" onsubmit="handleNewsletterSubmit(event)">
+                    <input type="email" id="newsletterEmail" placeholder="" data-i18n-placeholder="newsletter-email" required>
+                    <label class="newsletter-consent">
+                        <input type="checkbox" required>
+                        <span data-i18n="newsletter-consent">I agree to the processing of my personal data...</span>
+                    </label>
+                    <button type="submit" data-i18n="newsletter-subscribe">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-operators">
+            <div class="operators-logos">
+                <img src="https://travel.gtr.lv/img/tez-tour-logo.png" alt="Tez Tour" class="operator-logo" loading="lazy">
+                <img src="https://travel.gtr.lv/img/novatours.png" alt="Nova Tours" class="operator-logo" loading="lazy">
+                <img src="https://travel.gtr.lv/img/coral.png" alt="Coral Travel" class="operator-logo" loading="lazy">
+                <img src="https://travel.gtr.lv/img/anextour.png" alt="Anex Tour" class="operator-logo" loading="lazy">
+                <img src="https://travel.gtr.lv/img/joinup.png" alt="Join Up" class="operator-logo" loading="lazy">
+            </div>
+        </div>
+        <div class="footer-certifications">
+            <div class="iata-logo">
+                <img src="https://travel.gtr.lv/img/iata-logo.png" alt="IATA" loading="lazy" onerror="this.src='https://travel.gtr.lv/img/iata-logo.svg'; this.onerror=null;">
+                <span data-i18n="iata-member">IATA Member</span>
+            </div>
+            <div class="license-info">
+                <span>TATO</span> | <span data-i18n="license">License:</span> 
+                <a href="https://registri.ptac.gov.lv/dokuments_T-2019-174_nr-7461" target="_blank" rel="noopener noreferrer">2019-174</a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Gulliver Travel. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/37122306472" class="floating-whatsapp" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp" title="Contact us on WhatsApp" data-whatsapp-text="WhatsApp">
+        <img src="https://travel.gtr.lv/img/whatsapp_icon.png" alt="WhatsApp">
+    </a>
+</body>
+</html>

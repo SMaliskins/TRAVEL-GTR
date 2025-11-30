@@ -8,6 +8,7 @@ services:
     repo: SMaliskins/TRAVEL-GTR
     branch: main
     deploy_on_push: true
+  build_command: echo "No build needed for PHP"
   run_command: php -S 0.0.0.0:8080 -t . router.php
   environment_slug: php
   instance_count: 1

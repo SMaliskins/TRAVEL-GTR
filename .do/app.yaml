@@ -1,0 +1,22 @@
+name: gtr-travel
+region: ams
+services:
+- name: web
+  source_dir: /
+  github:
+    repo: SMaliskins/TRAVEL-GTR
+    branch: main
+    deploy_on_push: true
+  run_command: php -S 0.0.0.0:8080 -t . router.php
+  environment_slug: php
+  instance_count: 1
+  instance_size_slug: basic-xxs
+  http_port: 8080
+  routes:
+  - path: /
+  health_check:
+    http_path: /
+  envs:
+  - key: APP_ENV
+    value: production
+

@@ -1,0 +1,31 @@
+# Enable rewrite engine
+RewriteEngine On
+
+# Redirect to index.html if directory is accessed
+DirectoryIndex index.html index.php index.htm
+
+# Allow access to files
+<FilesMatch "\.(html|php|css|js|json|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot)$">
+    Order allow,deny
+    Allow from all
+</FilesMatch>
+
+# Protect admin/data directory
+<Directory "admin/data">
+    Deny from all
+</Directory>
+
+# Protect config files
+<FilesMatch "^(config\.php|\.htaccess)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Force HTTPS (optional - uncomment if you want to force HTTPS)
+# RewriteCond %{HTTPS} off
+# RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+# Custom error pages (optional)
+# ErrorDocument 404 /404.html
+# ErrorDocument 500 /500.html
+
